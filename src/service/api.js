@@ -4,7 +4,7 @@ console.log(API_URL)
 
 let accessToken = null;
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api' || 'https://ia-06-backend.vercel.app/api',
+    baseURL: 'https://ia-07-be.vercel.app/api',
     headers: {
         'Content-Type': 'application/json'
     },
