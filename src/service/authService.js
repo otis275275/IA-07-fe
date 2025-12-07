@@ -9,7 +9,7 @@ export const getErrorMessage = (error) => {
     // Cấp độ 1: Kiểm tra lỗi mạng/lỗi không xác định
     if (!error || !error.response) { 
         // Lỗi này xảy ra nếu trình duyệt không nhận được phản hồi (vd: lỗi CORS, lỗi mạng)
-        return "Sai mật khẩu hoặc email.";
+        return "Lỗi mạng hoặc không thể kết nối đến server";
     }
 
     // Cấp độ 2: Lấy dữ liệu phản hồi (resData) một cách an toàn
