@@ -14,14 +14,15 @@ export const getErrorMessage = (error) => {
 
     // Cấp độ 2: Lấy dữ liệu phản hồi (resData) một cách an toàn
     const resData = error.response.data;
+    const status = error.response.status;
     
     // Cấp độ 3: Ưu tiên lấy message từ Backend (message: "Email hoặc mật khẩu không chính xác")
-    if (resData && resData.message) {
+    if (resData && resData.message && resData.message.trim().length > 0) { 
         return resData.message;
     }
 
     // Cấp độ 4: Dựa vào status code nếu không có message
-    switch (error.response.status) {
+    switch (status) {
         case 401:
             // Nếu lỗi 401, nhưng không có body message (resData.message)
             return "Email hoặc mật khẩu không chính xác."; 
