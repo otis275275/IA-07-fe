@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import { RouterProvider, Routes, BrowserRouter, Route, Navigate, Router } from 'react-router-dom'
 import Home from './Commponent/Home.jsx'
 import Register from './Commponent/Register.jsx'
 import Login from './Commponent/Login.jsx'
 import Content from './Commponent/Content.jsx'
 import './App.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import { useInitializeAuth } from './service/useInitAuth.js';
+import { useUser } from './service/reactQuey.js'
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -21,14 +19,15 @@ const queryClient = new QueryClient({
 });
 
 const AppRouter = () => {
-    const isInitializing = useInitializeAuth(); 
-    
-    // Lưu ý: Nếu bạn vẫn muốn giữ độ trễ giả lập 500ms, bạn có thể kết hợp state
-    // const [isAppReady, setIsAppReady] = useState(false);
-    // const isLoading = isInitializing || !isAppReady; 
-    
+    const isAuthChecking = useInitializeAuth(); 
+
+    const { data: user, isLoading: isUserLoading } = useUser({ 
+        enabled: !isAuthChecking // Chỉ chạy khi token đã được khôi phục
+    });
+    const isLoading = isAuthChecking || isUserLoading;
+
     // Ở đây, ta chỉ dùng logic khởi tạo token:
-    if (isInitializing) {
+    if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
                 <svg className="animate-spin h-8 w-8 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
