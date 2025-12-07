@@ -2,6 +2,7 @@ import Home from './Commponent/Home.jsx'
 import Register from './Commponent/Register.jsx'
 import Login from './Commponent/Login.jsx'
 import Content from './Commponent/Content.jsx'
+import { RouterProvider, Routes, BrowserRouter, Route, Navigate, Router } from 'react-router-dom'
 import './App.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
