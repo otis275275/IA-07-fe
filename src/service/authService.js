@@ -9,20 +9,19 @@ export const getErrorMessage = (error) => {
     // Cấp độ 1: Kiểm tra lỗi mạng/lỗi không xác định
     if (!error || !error.response) { 
         // Lỗi này xảy ra nếu trình duyệt không nhận được phản hồi (vd: lỗi CORS, lỗi mạng)
-        return "Lỗi mạng hoặc không thể kết nối đến server hoặc sai thông tin đăng nhập";
+        return "Lỗi không xác định hoặc sai thông tin";
     }
 
     // Cấp độ 2: Lấy dữ liệu phản hồi (resData) một cách an toàn
     const resData = error.response.data;
-    const status = error.response.status;
     
     // Cấp độ 3: Ưu tiên lấy message từ Backend (message: "Email hoặc mật khẩu không chính xác")
-    if (resData && resData.message && resData.message.trim().length > 0) { 
+    if (resData && resData.message) {
         return resData.message;
     }
 
     // Cấp độ 4: Dựa vào status code nếu không có message
-    switch (status) {
+    switch (error.response.status) {
         case 401:
             // Nếu lỗi 401, nhưng không có body message (resData.message)
             return "Email hoặc mật khẩu không chính xác."; 
