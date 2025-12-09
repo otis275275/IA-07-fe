@@ -28,7 +28,8 @@ api.interceptors.response.use(response => {
 }, async error => {
     const originalRequest = error.config;
     //Chỉ thực hiện refresh token khi gặp lỗi 401 và chưa retry lần nào (gán ._retry)
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    // Đồng thời kiểm tra xem request lỗi có phải là request refresh token không để tránh loop
+    if (error.response && error.response.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/refresh')) {
         //Tạo flag để tránh lặp vô hạn
         originalRequest._retry = true;
         try {
@@ -48,7 +49,7 @@ api.interceptors.response.use(response => {
             // Axios sẽ coi yêu cầu API ban đầu (api.get('/user')) là thất bại.
         }
     }
-
+    return Promise.reject(error);
 })
 
 
