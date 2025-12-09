@@ -26,8 +26,8 @@ const AppRouter = () => {
         enabled: !isAuthChecking // Chỉ chạy khi token đã được khôi phục
     });
     
-    // Tránh flicker: Loading khi đang check auth HOẶC đang load user HOẶC (đã check auth xong nhưng chưa có kết quả user/error)
-    const isLoading = isAuthChecking || isUserLoading || (!isAuthChecking && !user && !isError);
+    // Tránh flicker: Loading khi đang check auth HOẶC đang load user
+    const isLoading = isAuthChecking || isUserLoading;
 
     // Ở đây, ta chỉ dùng logic khởi tạo token:
     if (isLoading) {
