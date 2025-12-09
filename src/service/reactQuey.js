@@ -12,6 +12,8 @@ export function useUser(options = {}) {
         retry: false, //Không tự động retry khi lỗi
         refetchOnWindowFocus: false,
         refetchOnMount: false,
+        refetchOnReconnect: false,
+        staleTime: 1000 * 60 * 5,
         ...options
     });
 }

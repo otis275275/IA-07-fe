@@ -51,7 +51,12 @@ api.interceptors.response.use(response => {
             return api(originalRequest);
         } catch (e) {
             console.error("Refresh token failed:", e);
-            accessToken = null;        
+            accessToken = null;
+            // Nếu refresh token thất bại, chuyển hướng về login để người dùng đăng nhập lại
+            // Sử dụng window.location.pathname để kiểm tra nếu chưa ở trang login thì mới chuyển
+            if (window.location.pathname !== '/login') {
+                 window.location.href = '/login';
+            }
             return Promise.reject(error); //QUAN TRỌNG, Khi Interceptor ném lỗi, 
             // Axios sẽ coi yêu cầu API ban đầu (api.get('/user')) là thất bại.
         }
