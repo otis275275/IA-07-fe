@@ -34,9 +34,17 @@ api.interceptors.response.use(response => {
         originalRequest._retry = true;
         try {
             // Gọi API làm mới token
-            const res = await api.post("/auth/refresh");
+            // Sử dụng axios instance mới (hoặc axios gốc) để tránh lặp interceptor
+            const res = await axios.post("https://ia-07-be.vercel.app/api/auth/refresh", {}, {
+                withCredentials: true
+            });
+            
             console.log("Refresh token response:", res);
             accessToken = res.data.accessToken;
+            
+            // Cập nhật token cho request ban đầu
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            
             //Hàm api(originalRequest) được gọi. Request ban đầu được gửi lại, 
             // nhưng lần này nó sẽ đi qua api.interceptors.request.use lần nữa 
             // và sử dụng Access Token mới vừa được cập nhật.
@@ -44,7 +52,6 @@ api.interceptors.response.use(response => {
         } catch (e) {
             console.error("Refresh token failed:", e);
             accessToken = null;        
-            window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập    
             return Promise.reject(error); //QUAN TRỌNG, Khi Interceptor ném lỗi, 
             // Axios sẽ coi yêu cầu API ban đầu (api.get('/user')) là thất bại.
         }
