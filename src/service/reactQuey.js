@@ -1,6 +1,6 @@
 import {useQueryClient, useQuery} from "@tanstack/react-query";
 import api, {setAccessToken} from "./api";
-export function useUser() {
+export function useUser(options = {}) {
     //Tạo query để lấy thông tin user hiện tại
     return useQuery({
         //Tạo key để lưu trữ và truy xuất dữ liệu trong cache
@@ -10,5 +10,8 @@ export function useUser() {
             return response.data;
         },
         retry: false, //Không tự động retry khi lỗi
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        ...options
     });
 }

@@ -22,10 +22,12 @@ const queryClient = new QueryClient({
 const AppRouter = () => {
     const isAuthChecking = useInitializeAuth(); 
 
-    const { data: user, isLoading: isUserLoading } = useUser({ 
+    const { data: user, isLoading: isUserLoading, isError } = useUser({ 
         enabled: !isAuthChecking // Chỉ chạy khi token đã được khôi phục
     });
-    const isLoading = isAuthChecking || isUserLoading;
+    
+    // Tránh flicker: Loading khi đang check auth HOẶC đang load user HOẶC (đã check auth xong nhưng chưa có kết quả user/error)
+    const isLoading = isAuthChecking || isUserLoading || (!isAuthChecking && !user && !isError);
 
     // Ở đây, ta chỉ dùng logic khởi tạo token:
     if (isLoading) {
